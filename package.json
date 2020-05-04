@@ -19,7 +19,8 @@
     "react-native-screens": "^2.7.0",
     "react-navigation": "^4.3.9",
     "react-navigation-stack": "^2.4.0",
-    "reactotron-react-native": "^5.0.0"
+    "reactotron-react-native": "^5.0.0",
+    "styled-components": "^5.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
