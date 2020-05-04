@@ -8,6 +8,8 @@ import {
   StatusBar,
 } from 'react-native';
 
+import './config/ReactotronConfig';
+
 import {
   Header,
   LearnMoreLinks,
@@ -55,6 +57,8 @@ const styles = StyleSheet.create({
   },
 });
 
+console.tron.log('Hello World');
+
 const App = () => {
   return (
     <>
@@ -62,8 +66,7 @@ const App = () => {
       <SafeAreaView>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}
-        >
+          style={styles.scrollView}>
           <Header />
           {global.HermesInternal == null ? null : (
             <View style={styles.engine}>
