@@ -5,5 +5,5 @@ if (__DEV__) {
 
   console.tron = tron;
 
-  tron.clear();
+  Reactotron.clear();
 }
