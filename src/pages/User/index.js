@@ -29,23 +29,65 @@ export default class User extends Component {
   };
 
   state = {
-    user: {},
     stars: [],
-    loading: false,
+    page: 1,
+    loading: true,
+    moreItems: true,
   };
 
   async componentDidMount() {
-    const { navigation } = this.props;
-    const user = navigation.getParam('user');
-    this.setState({ user, loading: true });
-
-    const response = await api.get(`/users/${user.login}/starred`);
-
-    this.setState({ stars: response.data, loading: false });
+    this.loadRepositories();
   }
 
+  renderItem = ({ item }) => {
+    return (
+      <Starred>
+        <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
+        <Info>
+          <Title>{item.name}</Title>
+          <Author>{item.owner.login}</Author>
+        </Info>
+      </Starred>
+    );
+  };
+
+  loadRepositories = async (page = 1) => {
+    const { stars } = this.state;
+    const { navigation } = this.props;
+    const user = navigation.getParam('user');
+
+    const response = await api.get(`/users/${user.login}/starred?`, {
+      params: { page },
+    });
+
+    if (!response.data) {
+      this.setState({ moreItems: false });
+
+      return;
+    }
+
+    this.setState({
+      stars: page >= 2 ? [...stars, ...response.data] : response.data,
+      loading: false,
+      page,
+    });
+  };
+
+  loadMore = () => {
+    const { page, moreItems } = this.state;
+
+    if (!moreItems) return;
+
+    const nextPage = page + 1;
+
+    this.loadRepositories(nextPage);
+  };
+
   render() {
-    const { user, stars, loading } = this.state;
+    const { navigation } = this.props;
+    const { stars, loading } = this.state;
+
+    const user = navigation.getParam('user');
 
     return (
       <Container>
@@ -60,15 +102,9 @@ export default class User extends Component {
           <Stars
             data={stars}
             keyExtractor={(star) => String(star.id)}
-            renderItem={({ item }) => (
-              <Starred>
-                <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
-                <Info>
-                  <Title>{item.name}</Title>
-                  <Author>{item.owner.login}</Author>
-                </Info>
-              </Starred>
-            )}
+            renderItem={this.renderItem}
+            onEndReachedTreshold={0.2}
+            onEndReached={this.loadMore}
           />
         )}
       </Container>
