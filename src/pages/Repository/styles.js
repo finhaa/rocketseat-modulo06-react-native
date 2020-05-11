@@ -9,10 +9,14 @@ export const Browser = styled(WebView)`
   flex: 1;
 `;
 
-export const LoadingSpinner = styled.ActivityIndicator`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
+export const LoadingContainer = styled.View`
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 `;
+
+export const LoadingSpinner = styled.ActivityIndicator.attrs({
+  size: 'large',
+  color: '#7159C1',
+})``;

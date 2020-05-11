@@ -14,6 +14,7 @@ import {
   Info,
   Title,
   Author,
+  LoadingContainer,
   LoadingSpinner,
 } from './styles';
 
@@ -110,7 +111,9 @@ export default class User extends Component {
           <Bio>{user.bio}</Bio>
         </Header>
         {loading ? (
-          <LoadingSpinner size="large" color="#7159c1" />
+          <LoadingContainer>
+            <LoadingSpinner />
+          </LoadingContainer>
         ) : (
           <Stars
             data={stars}

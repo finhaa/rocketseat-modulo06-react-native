@@ -77,10 +77,13 @@ export const Author = styled.Text`
   margin-top: 2px;
 `;
 
-export const LoadingSpinner = styled.ActivityIndicator`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
+export const LoadingContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
 `;
+
+export const LoadingSpinner = styled.ActivityIndicator.attrs({
+  size: 'large',
+  color: '#7159C1',
+})``;

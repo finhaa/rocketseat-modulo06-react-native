@@ -2,7 +2,15 @@ import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 
-import { Container, Browser, LoadingSpinner } from './styles';
+import { Container, Browser, LoadingContainer, LoadingSpinner } from './styles';
+
+function Loading() {
+  return (
+    <LoadingContainer>
+      <LoadingSpinner />
+    </LoadingContainer>
+  );
+}
 
 export default class Repository extends Component {
   static propTypes = {
@@ -32,10 +40,11 @@ export default class Repository extends Component {
     return (
       <Container>
         <Browser
+          startInLoadingState={loading}
+          renderLoading={() => <Loading />}
           onLoad={() => this.load()}
           source={{ uri: repository.html_url }}
         />
-        {loading && <LoadingSpinner size="large" color="#7159c1" />}
       </Container>
     );
   }
