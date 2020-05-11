@@ -30,12 +30,19 @@ export default class Repository extends Component {
     const { loading } = this.state;
 
     return (
-      <Container>
-        <Browser
-          onLoad={() => this.load()}
-          source={{ uri: repository.html_url }}
-        />
-        {loading && <LoadingSpinner size="large" color="#7159c1" />}
+      <Container>       
+        {loading ? 
+          (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>          
+              <LoadingSpinner size="large" color="#7159c1" />
+            </View>
+          ):(
+            <Browser
+              onLoad={() => this.load()}
+              source={{ uri: repository.html_url }}
+            />
+          )
+        }
       </Container>
     );
   }
