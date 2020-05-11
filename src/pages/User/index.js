@@ -25,6 +25,7 @@ export default class User extends Component {
   static propTypes = {
     navigation: PropTypes.shape({
       getParam: PropTypes.func,
+      navigate: PropTypes.func,
     }).isRequired,
   };
 
@@ -32,24 +33,13 @@ export default class User extends Component {
     stars: [],
     page: 1,
     loading: true,
+    refreshing: false,
     moreItems: true,
   };
 
   async componentDidMount() {
     this.loadRepositories();
   }
-
-  renderItem = ({ item }) => {
-    return (
-      <Starred>
-        <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
-        <Info>
-          <Title>{item.name}</Title>
-          <Author>{item.owner.login}</Author>
-        </Info>
-      </Starred>
-    );
-  };
 
   loadRepositories = async (page = 1) => {
     const { stars } = this.state;
@@ -60,7 +50,7 @@ export default class User extends Component {
       params: { page },
     });
 
-    if (!response.data) {
+    if (!response.data || response.data === [] || response.data === null) {
       this.setState({ moreItems: false });
 
       return;
@@ -70,6 +60,7 @@ export default class User extends Component {
       stars: page >= 2 ? [...stars, ...response.data] : response.data,
       loading: false,
       page,
+      refreshing: false,
     });
   };
 
@@ -83,9 +74,31 @@ export default class User extends Component {
     this.loadRepositories(nextPage);
   };
 
+  refreshList = () => {
+    this.setState({ refreshing: true, stars: [] }, this.loadRepositories);
+  };
+
+  handleNavigate = (repository) => {
+    const { navigation } = this.props;
+
+    navigation.navigate('Repository', { repository });
+  };
+
+  renderItem = ({ item }) => {
+    return (
+      <Starred onPress={() => this.handleNavigate(item)}>
+        <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
+        <Info>
+          <Title>{item.name}</Title>
+          <Author>{item.owner.login}</Author>
+        </Info>
+      </Starred>
+    );
+  };
+
   render() {
     const { navigation } = this.props;
-    const { stars, loading } = this.state;
+    const { stars, loading, refreshing } = this.state;
 
     const user = navigation.getParam('user');
 
@@ -105,6 +118,8 @@ export default class User extends Component {
             renderItem={this.renderItem}
             onEndReachedTreshold={0.2}
             onEndReached={this.loadMore}
+            onRefresh={this.refreshList}
+            refreshing={refreshing}
           />
         )}
       </Container>
