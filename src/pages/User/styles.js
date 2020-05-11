@@ -76,3 +76,11 @@ export const Author = styled.Text`
   color: #666;
   margin-top: 2px;
 `;
+
+export const LoadingSpinner = styled.ActivityIndicator`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+`;

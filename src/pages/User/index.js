@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ActivityIndicator } from 'react-native';
 import api from '../../services/api';
 
 import {
@@ -15,6 +14,7 @@ import {
   Info,
   Title,
   Author,
+  LoadingSpinner,
 } from './styles';
 
 export default class User extends Component {
@@ -110,7 +110,7 @@ export default class User extends Component {
           <Bio>{user.bio}</Bio>
         </Header>
         {loading ? (
-          <ActivityIndicator size="large" color="#7159c1" />
+          <LoadingSpinner size="large" color="#7159c1" />
         ) : (
           <Stars
             data={stars}

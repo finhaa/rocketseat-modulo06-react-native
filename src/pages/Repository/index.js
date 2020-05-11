@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+
 import PropTypes from 'prop-types';
 
-import { Container, Browser } from './styles';
+import { Container, Browser, LoadingSpinner } from './styles';
 
 export default class Repository extends Component {
   static propTypes = {
@@ -35,7 +35,7 @@ export default class Repository extends Component {
           onLoad={() => this.load()}
           source={{ uri: repository.html_url }}
         />
-        {loading && <ActivityIndicator size="large" color="#7159c1" />}
+        {loading && <LoadingSpinner size="large" color="#7159c1" />}
       </Container>
     );
   }
